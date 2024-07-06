@@ -29,5 +29,12 @@ class Student {
 // ];
 String? GrId;
 String? name;
-int selectindex = 0;
+int selectedIndex = 0;
 String? Standard;
+
+class StudentModel {
+  String? name, grid, std;
+  File? file;
+
+  StudentModel({this.name, this.grid, this.std, this.file});
+}

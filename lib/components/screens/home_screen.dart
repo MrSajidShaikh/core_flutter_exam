@@ -1,217 +1,123 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import '../../utils/global.dart';
 import '../../utils/students_list.dart';
-import 'StudentListScreen.dart';
 
-ImagePicker imagePicker = ImagePicker();
-File? fileImage;
-TextEditingController txtname = TextEditingController();
-TextEditingController txtgrid = TextEditingController();
-TextEditingController txtstandard = TextEditingController();
-
-class IdCard extends StatefulWidget {
-  const IdCard({super.key});
+class Homepage extends StatefulWidget {
+  const Homepage({super.key});
 
   @override
-  State<IdCard> createState() => _IdCardState();
+  State<Homepage> createState() => _HomepageState();
 }
 
-class _IdCardState extends State<IdCard> {
-  List<Student> students = [];
-
+class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
-    GlobalKey<FormState> formkey = GlobalKey();
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text(
-          'Registration Form',
-          style: TextStyle(color: Colors.white),
-        ),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.list),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => StudentListScreen(students: students, newStudent: null,),
-                ),
-              );
-            },
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: bgColor,
+        appBar: AppBar(
+          leading: Icon(Icons.arrow_back, color: barColor),
+          centerTitle: true,
+          backgroundColor: barColor,
+          title: const Text(
+            'Home Page',
+            style: TextStyle(color: Colors.black, fontSize: 22),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Form(
-          key: formkey,
+          toolbarHeight: 65,
+        ),
+        body: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 15, 8, 8),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 10),
-              Center(
-                child: CircleAvatar(
-                  backgroundColor: Colors.blue,
-                  radius: 55,
-                  backgroundImage: (fileImage != null) ? FileImage(fileImage!) : null,
-                  child: (fileImage != null)
-                      ? null
-                      : Image.asset('assets/images/Dp.png'),
+            children: List.generate(
+              studentList.length,
+                  (index) => Container(
+                height: 100,
+                padding: const EdgeInsets.only(left: 4),
+                margin: const EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: const Color(0xFFEEEEEE),
                 ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  IconButton(
-                      onPressed: () async {
-                        XFile? xfile = await imagePicker.pickImage(source: ImageSource.camera);
-                        setState(() {
-                          fileImage = File(xfile!.path);
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.camera_alt,
-                        size: 30,
-                        color: Colors.blue,
-                      )),
-                  IconButton(
-                      onPressed: () async {
-                        XFile? xfile = await imagePicker.pickImage(source: ImageSource.gallery);
-                        setState(() {
-                          fileImage = File(xfile!.path);
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.image,
-                        size: 30,
-                        color: Colors.blue,
-                      ))
-                ],
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0, right: 10, left: 10),
-                child: TextFormField(
-                  controller: txtname,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Value required';
-                    }
-                    if (RegExp(r'\d').hasMatch(value)) {
-                      return 'Enter Only Text';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 32,
+                      backgroundImage: (studentList[index].file != null)
+                          ? FileImage(studentList[index].file!)
+                          : null,
                     ),
-                    label: const Text(
-                      'Name',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(width: 2, color: Colors.blue)),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0, right: 10, left: 10),
-                child: TextFormField(
-                  controller: txtgrid,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Value required';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    label: const Text(
-                      'Gr Id',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(width: 2, color: Colors.blue)),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20.0, right: 10, left: 10),
-                child: TextFormField(
-                  controller: txtstandard,
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Value required';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    label: const Text(
-                      'Standard',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(width: 2, color: Colors.blue)),
-                  ),
-                ),
-              ),
-              Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      bool res = formkey.currentState!.validate();
-                      if (res) {
-                        String name = txtname.text;
-                        String grId = txtgrid.text;
-                        String standard = txtstandard.text;
-                        Student newStudent = Student(name: name, grId: grId, standard: standard, image: fileImage);
-
-                        setState(() {
-                          students.add(newStudent);
-                        });
-
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => StudentListScreen(
-                              students: students, newStudent: null,
-                            ),
+                    SizedBox(
+                      width: 260,
+                      child: GestureDetector(
+                        onTap: () {
+                          txtName.text = studentList[index].name;
+                          txtGrId.text = studentList[index].grid;
+                          txtStd.text = studentList[index].std;
+                          fileImage = studentList[index].file;
+                          Navigator.of(context).pushNamed('/showData');
+                        },
+                        child: ListTile(
+                          title: Text(
+                            studentList[index].name,
+                            style: const TextStyle(fontSize: 20, color: Colors.black),
                           ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text('Enter valid value!'),
-                            action: SnackBarAction(
-                              label: 'Retry',
-                              onPressed: () {
-                                formkey.currentState!.reset();
-                              },
-                            ),
+                          subtitle: Text(
+                            studentList[index].grid,
+                            style:
+                            const TextStyle(fontSize: 20, color: Colors.black),
                           ),
-                        );
-                      }
-                    },
-                    child: const Text(
-                      'Submit',
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                          trailing: Text(
+                            studentList[index].std,
+                            style: const TextStyle(fontSize: 20, color: Colors.black),
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        GestureDetector(
+                            onTap: () {
+                              txtName.text = studentList[index].name;
+                              txtGrId.text = studentList[index].grid;
+                              txtStd.text = studentList[index].std;
+                              fileImage = studentList[index].file;
+                              selectedIndex = index;
+                              Navigator.of(context).pushNamed('/editPage');
+                            },
+                            child: const Icon(Icons.edit, color: Colors.black)),
+                        // const SizedBox(
+                        //   width: 10,
+                        // ),
+                        GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                studentList.removeAt(index);
+                              });
+                            },
+                            child: const Icon(Icons.delete, color: Colors.black)),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                  ],
                 ),
               ),
-            ],
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            txtName = TextEditingController();
+            txtGrId = TextEditingController();
+            txtStd = TextEditingController();
+            fileImage = null;
+            Navigator.of(context).pushNamed('/fillDetails');
+          },
+          backgroundColor: barColor,
+          child: const Icon(
+            Icons.add,
+            color: Colors.black,
           ),
         ),
       ),
