@@ -34,7 +34,7 @@
 
 ###
 
-<h3 align="center"> 2. Details Page </h3>
+<h3 align="center"> 3. Details Page </h3>
 
 ###
 
@@ -54,7 +54,7 @@
 ###
 
 
-<h3 align="center"> 3. App </h3>
+<h3 align="center"> 4. App </h3>
 
 ###
 
