@@ -93,6 +93,7 @@ class _FilldetailsState extends State<Filldetails> {
                       if (value!.isEmpty) {
                         return 'Field Must be Required';
                       }
+                      return null;
                     },
                     controller: txtName,
                     decoration: InputDecoration(
