@@ -8,7 +8,7 @@
 
 - Remove Student Data: Safely delete student records when they are no longer needed, such as when a student graduates or transfers to another school. This helps maintain an up-to-date and clutter-free database.
 
-
+#
 
 
 <h1 align="center"> 🔸 Student Details 🔸 </h1>
